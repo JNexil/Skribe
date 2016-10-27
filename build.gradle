@@ -1,12 +1,11 @@
 buildscript {
     apply from: "dependencies.gradle"
-    ext.kotlin_version = '1.0.4'
-
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath lib["kotlin"]["gradle"]
+        classpath lib.junit["plugin"]
     }
 }
 
@@ -21,20 +20,26 @@ subprojects {
         jcenter()
     }
 
+    apply from: "../spek.gradle"
+
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-        testCompile group: 'junit', name: 'junit', version: '4.11'
+        compile lib["kotlin"]["test"]
+        compile lib["kotlin"]["std"]
+
+        testRuntime lib.spek["junit"]
     }
 }
 
 project(":spek") {
     dependencies {
+        compile project(":library")
         compile lib["spek"]["api"]
     }
 }
 
 project(":kotlintest") {
     dependencies {
+        compile project(":library")
         compile lib["kotlintest"]
     }
 }

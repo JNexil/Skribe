@@ -34,7 +34,8 @@ ext.lib = [
                 std    : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
                 reflect: "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}",
                 jdk8   : "org.jetbrains.kotlinx:kotlinx-support-jdk8:${versions.kotlinx}",
-                jdk7   : "org.jetbrains.kotlinx:kotlinx-support-jdk7:${versions.kotlinx}"
+                jdk7   : "org.jetbrains.kotlinx:kotlinx-support-jdk7:${versions.kotlinx}",
+                test   : "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}"
         ],
         spock       : 'org.spockframework:spock-core:1.1-groovy-2.4-rc-1',
         jupiter     : [
