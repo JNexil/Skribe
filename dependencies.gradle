@@ -79,8 +79,6 @@ ext.lib = [
         rxkotlin    : "io.reactivex:rxkotlin:0.60.0"
 ]
 
-lib["anci-test"] = String.format(lib.anci["test"].toString(), "main")
-
 task wrapper(type: Wrapper) {
     gradleVersion = '3.1'
 }
