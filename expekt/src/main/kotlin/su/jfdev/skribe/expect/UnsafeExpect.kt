@@ -6,16 +6,20 @@ import java.util.*
 import kotlin.reflect.*
 
 internal object UnsafeExpect {
-    internal fun <T, S, C: ExpectAny<S>> ExpectAny<T>.child(function: KFunction1<T, S?>, calling: (S?) -> C): C = child(function.name, function, calling)
-    internal fun <T, S, C: ExpectAny<S>> ExpectAny<T>.child(property: KProperty1<T, S?>, calling: (S?) -> C): C = child(property.name, property, calling)
-    internal fun <T, S, C: ExpectAny<S>> ExpectAny<T>.child(text: String, extractor: T.() -> S?, calling: (S?) -> C): C {
-        val child = findSubject().extractor()
-        return calling(child).apply {
-            transferWords(this@child, "$text $child")
-        }
-    }
+    internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.child(function: KFunction1<T, S?>, calling: (S?) -> C): C = child(function.name, function, calling)
+    internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.child(property: KProperty1<T, S?>, calling: (S?) -> C): C = child(property.name, property, calling)
 
-    private fun ExpectAny<*>.transferWords(from: ExpectAny<*>, text: String) {
+    internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.cast(type: Class<S>, calling: (S?) -> C): C = child("as ${type.simpleName}",
+                                                                                                          extractor = { type.cast(this) },
+                                                                                                          calling = calling)
+
+    internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.child(text: String, extractor: T.() -> S?, calling: (S?) -> C): C = child(text,
+                                                                                                                                calling = calling,
+                                                                                                                                child = findSubject().extractor())
+
+    private fun <C: ExpectAny<*>, S, T> ExpectAny<T>.child(text: String, child: S?, calling: (S?) -> C) = calling(child).withTransfer(from = this, text = "$text $child")
+
+    private fun <T: ExpectAny<*>> T.withTransfer(from: ExpectAny<*>, text: String): T = apply {
         val childWords = findWords()
         childWords.clear()
         childWords += from.findWords()
