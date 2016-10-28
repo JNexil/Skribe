@@ -2,7 +2,6 @@ package su.jfdv.skribe.adapter
 
 import org.jetbrains.spek.api.dsl.*
 import su.jfdev.skribe.adapter.*
-import su.jfdev.skribe.stepwise.*
 import java.util.*
 
 class SpekSuite private constructor(): SuiteAdapter {
@@ -58,5 +57,4 @@ class SpekSuite private constructor(): SuiteAdapter {
     inner class SpekCase: CaseAdapter
 }
 
-fun <T> Dsl.with(factory: () -> T): Intermediate<T> = SpekSuite(this).with(factory)
-fun <T> SubjectDsl<T>.withSubject(): Intermediate<T> = SpekSuite(this).with { subject }
+fun Dsl.adapter(): SuiteAdapter = SpekSuite(this)
