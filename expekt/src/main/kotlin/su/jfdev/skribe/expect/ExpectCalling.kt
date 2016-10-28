@@ -8,8 +8,8 @@ class ExpectCalling<R>(subject: Calling<R>?, flavor: Flavor): AbstractExpect<Cal
     val successful by negate(Calling<R>::isFail)
     val done by negate(Calling<R>::isFail)
 
-    val exception by property {
-        get(Calling<R>::exception)
+    val throwable by property {
+        get(Calling<R>::throwable)
     }
 
     val result by property {
@@ -20,10 +20,22 @@ class ExpectCalling<R>(subject: Calling<R>?, flavor: Flavor): AbstractExpect<Cal
         get(Calling<R>::duration)
     }
 
+    fun throwable(throwable: Class<out Throwable>) = me {
+        words += "throwable"
+        words += throwable.toString()
+        verifyInstance(throwable, Calling<R>::throwable)
+    }
+
+    fun error(error: Class<out Error>) = me {
+        words += "error"
+        words += error.toString()
+        verifyInstance(error, Calling<R>::throwable)
+    }
+
     fun exception(exception: Class<out Exception>) = me {
         words += "exception"
         words += exception.toString()
-        verifyInstance(exception, Calling<R>::exception)
+        verifyInstance(exception, Calling<R>::throwable)
     }
 
     fun cause(exception: Class<out Exception>) = me {
