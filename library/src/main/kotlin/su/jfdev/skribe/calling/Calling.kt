@@ -21,7 +21,7 @@ class Calling<R>(action: () -> R) {
 
     val failCause: Throwable? get() = exception!!.cause
     val failMessage: String? get() = exception!!.message
-    val isFail: Boolean get() = exception == null
+    val isFail: Boolean get() = exception != null
 
     override fun equals(other: Any?): Boolean = (this === other) ||
                                                 (other is Calling<*>) &&
