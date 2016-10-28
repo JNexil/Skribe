@@ -25,17 +25,17 @@ subprojects {
     dependencies {
         compile lib["kotlin"]["test"]
         compile lib["kotlin"]["std"]
-        compileOnly lib.spek["expekt"]
 
+        testCompile project(":patronus")
         testCompile project(":spek")
         testRuntime lib.spek["junit"]
     }
 }
 
-project(":expekt") {
+project(":patronus") {
     dependencies {
+        compile lib["kotlin"]["reflect"]
         compile project(":library")
-        compile lib.spek["expekt"]
     }
 }
 
