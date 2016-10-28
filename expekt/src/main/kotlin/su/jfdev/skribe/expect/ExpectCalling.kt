@@ -9,52 +9,66 @@ class ExpectCalling<R>(subject: Calling<R>?, flavor: Flavor): AbstractExpect<Cal
     val done by negate(Calling<R>::isFail)
 
     val throwable by property {
-        get(Calling<R>::throwable)
+        via(Calling<R>::throwable)
     }
 
     val result by property {
-        get(Calling<R>::result)
+        via(Calling<R>::result)
     }
 
     val duration by property {
-        get(Calling<R>::duration)
+        via(Calling<R>::duration)
     }
 
-    fun throwable(throwable: Class<out Throwable>) = me {
+    val cause by property {
+        via(Calling<R>::failCause)
+    }
+
+    val message by property {
+        via(Calling<R>::failMessage)
+    }
+
+    fun throwable(throwable: Class<out Throwable> = Throwable::class.java, message: String? = null) = me {
         words += "throwable"
         words += "[$throwable]"
-        verifyInstance(throwable, Calling<R>::throwable)
+        verifyThrowable(throwable)
+        verifyMessage(message)
     }
 
-    fun error(error: Class<out Error>) = me {
+
+    fun error(error: Class<out Error> = Error::class.java, message: String? = null) = me {
         words += "error"
         words += "[$error]"
-        verifyInstance(error, Calling<R>::throwable)
+        verifyThrowable(error)
+        verifyMessage(message)
     }
 
-    fun assertion(assertion: Class<out AssertionError>) = me {
-        words += "assertion"
+    fun assertion(assertion: Class<out AssertionError> = AssertionError::class.java, message: String? = null) = me {
+        words += "assertion [] ->"
         words += "[$assertion]"
-        verifyInstance(assertion, Calling<R>::throwable)
+        verifyThrowable(assertion)
+        verifyMessage(message)
     }
 
-    fun exception(exception: Class<out Exception>) = me {
+    fun exception(exception: Class<out Exception> = Exception::class.java, message: String? = null) = me {
         words += "exception"
         words += "[$exception]"
-        verifyInstance(exception, Calling<R>::throwable)
+        verifyThrowable(exception)
+        verifyMessage(message)
     }
 
-    fun cause(exception: Class<out Exception>) = me {
-        words += "cause"
-        words += exception.toString()
-        verifyInstance(exception, Calling<R>::failCause)
+    private fun verifyThrowable(throwable: Class<out Throwable>) = verifyInstance(throwable, Calling<R>::throwable)
+
+    private fun verifyMessage(message: String?) {
+        if (message != null) verify {
+            subject!!.failMessage == message
+        }
     }
 
     fun message(message: String) = me {
         words += "message"
         words += message
-        verify {
-            subject!!.failMessage == message
-        }
+        verifyMessage(message)
     }
+
 }

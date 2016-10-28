@@ -6,12 +6,12 @@ import java.util.*
 import kotlin.reflect.*
 
 internal object UnsafeExpect {
-    internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.child(function: KFunction1<T, S?>, calling: (S?) -> C): C = child(function.name, function, calling)
-    internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.child(property: KProperty1<T, S?>, calling: (S?) -> C): C = child(property.name, property, calling)
+    internal fun <T, S, C: ExpectAny<*>> ExpectAny<out T>.child(function: KFunction1<T, S?>, calling: (S?) -> C): C = child(function.name, function, calling)
+    internal fun <T, S, C: ExpectAny<*>> ExpectAny<out T>.child(property: KProperty1<T, S?>, calling: (S?) -> C): C = child(property.name, property, calling)
 
-    internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.cast(type: Class<S>, calling: (S?) -> C): C = child("as ${type.simpleName}",
-                                                                                                          extractor = { type.cast(this) },
-                                                                                                          calling = calling)
+    internal fun <T, S, C: ExpectAny<*>> ExpectAny<out T>.cast(type: Class<S>, calling: (S?) -> C): C = child("as ${type.simpleName}",
+                                                                                                              extractor = { type.cast(this) },
+                                                                                                              calling = calling)
 
     internal fun <T, S, C: ExpectAny<*>> ExpectAny<T>.child(text: String, extractor: T.() -> S?, calling: (S?) -> C): C = child(text,
                                                                                                                                 calling = calling,
