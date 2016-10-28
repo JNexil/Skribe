@@ -22,19 +22,25 @@ class ExpectCalling<R>(subject: Calling<R>?, flavor: Flavor): AbstractExpect<Cal
 
     fun throwable(throwable: Class<out Throwable>) = me {
         words += "throwable"
-        words += throwable.toString()
+        words += "[$throwable]"
         verifyInstance(throwable, Calling<R>::throwable)
     }
 
     fun error(error: Class<out Error>) = me {
         words += "error"
-        words += error.toString()
+        words += "[$error]"
         verifyInstance(error, Calling<R>::throwable)
+    }
+
+    fun assertion(assertion: Class<out AssertionError>) = me {
+        words += "assertion"
+        words += "[$assertion]"
+        verifyInstance(assertion, Calling<R>::throwable)
     }
 
     fun exception(exception: Class<out Exception>) = me {
         words += "exception"
-        words += exception.toString()
+        words += "[$exception]"
         verifyInstance(exception, Calling<R>::throwable)
     }
 
