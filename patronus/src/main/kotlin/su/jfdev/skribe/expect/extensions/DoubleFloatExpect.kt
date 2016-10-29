@@ -30,12 +30,12 @@ val Expect<Double>.infinite: Expect<Double> get() = backend()
 
 fun Expect<Double>.closeTo(expected: Double, delta: Double): Expect<Double> = backend()
         .append("close to $expected±$delta")
-        .assert {
+        .verify {
             abs(expected - real) <= delta
         }
 
 fun Expect<Float>.closeTo(expected: Float, delta: Float): Expect<Float> = backend()
         .append("close to $expected±$delta")
-        .assert {
+        .verify {
             abs(expected - real) <= delta
         }

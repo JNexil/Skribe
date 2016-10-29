@@ -15,5 +15,5 @@ private fun <F: Any, T: Any> Expect<F>.viaCallable(callable: KCallable<T?>): Exp
 
 fun <F: Any, T: Any> Expect<F>.like(clazz: Class<T>): Expect<T> = backend()
         .append("like $clazz")
-        .assert { clazz.isInstance(real) }
+        .verify { clazz.isInstance(real) }
         .map { clazz.cast(real) }

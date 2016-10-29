@@ -13,7 +13,7 @@ val <S: Any> Expect<S>.`null`: Expect<S> get() = backend()
 fun <S: Any> Expect<S>.satisfy(name: String = "condition", condition: (S) -> Boolean): Expect<S> = backend()
         .append("satisfy")
         .append(name)
-        .assert { condition(real) }
+        .verify { condition(real) }
 
 fun <S: Any> Expect<S>.equal(other: S?): Expect<S> = backend()
         .equalAssertion(other, "equal $other")
@@ -24,6 +24,6 @@ fun <S: Any> Expect<S>.identity(other: S?): Expect<S> = backend()
 inline fun <reified S: Any> Expect<S>.instanceOf(type: KClass<S> = S::class): Expect<S> = instanceOf(type.java)
 fun <S: Any> Expect<S>.instanceOf(type: Class<S>): Expect<S> = backend()
         .append("instance of ${type.simpleName}")
-        .assert {
+        .verify {
             type.isInstance(this)
         }
