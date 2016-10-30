@@ -1,6 +1,5 @@
 package su.jfdev.skribe.calling
 
-import java.time.*
 import kotlin.system.*
 
 class Calling<R>(action: () -> R) {
@@ -16,12 +15,13 @@ class Calling<R>(action: () -> R) {
                 throwable = e
             }
         }
-        duration = Duration.ofNanos(time)
+        duration = Duration.nanos(time)
     }
 
     val failCause: Throwable? get() = throwable!!.cause
     val failMessage: String? get() = throwable!!.message
     val isFail: Boolean get() = throwable != null
+    val isDone: Boolean get() = throwable == null
 
     override fun equals(other: Any?): Boolean = (this === other) ||
                                                 (other is Calling<*>) &&
