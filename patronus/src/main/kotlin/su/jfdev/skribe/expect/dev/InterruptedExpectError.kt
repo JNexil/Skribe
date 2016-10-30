@@ -3,6 +3,13 @@ package su.jfdev.skribe.expect.dev
 import su.jfdev.skribe.expect.Expect.*
 
 class InterruptedExpectError private constructor(message: String, cause: Throwable?): AssertionError(message, cause) {
+    init {
+        @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+        if (shortTrace && cause != null) {
+            (this as java.lang.Throwable).stackTrace = emptyArray()
+        }
+    }
+
     override var message: String = message; private set
     private operator fun plus(upper: Any) = apply {
         message = "$upper\nWHERE $message"
@@ -21,7 +28,7 @@ class InterruptedExpectError private constructor(message: String, cause: Throwab
         fun inspectionFail(backend: Backend<*>, cause: Throwable? = null): Nothing = throw when (cause) {
             is InterruptedExpectError -> cause + backend.line
             null                      -> fail(backend.line, null)
-            else                      -> fail("$backend BUT", cause)
+            else                      -> fail("$backend BUT:", cause)
         }
 
         fun fail(message: String, cause: Throwable? = null): Nothing = throw when {
