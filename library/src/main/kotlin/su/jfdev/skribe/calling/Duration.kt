@@ -59,7 +59,7 @@ class Duration(nanos: Long): Comparable<Duration>, Serializable {
         }
     }
 
-    private fun StringBuilder.append(count: Long, unit: DurationUnit) = append("$count ${unit.shortName}")
+    private fun StringBuilder.append(count: Long, unit: DurationUnit) = append("$count ${unit.shortName} ")
     private inline fun with(vararg units: DurationUnit, receiver: (DurationUnit) -> Unit) = units.forEach(receiver)
 }
 

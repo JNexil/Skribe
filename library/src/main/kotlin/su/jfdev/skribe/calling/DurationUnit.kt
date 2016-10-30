@@ -3,22 +3,22 @@ package su.jfdev.skribe.calling
 import java.lang.Math.*
 import java.util.concurrent.*
 
-enum class DurationUnit(@Suppress("unused") val longName: String, val shortName: String, prev: Long) {
-    NANO("nanosecond", "ns", 1),
-    MICRO("microsecond", "mcs", 1000),
-    MILLI("millisecond", "ms", 1000),
-    SECOND("second", "s", 1000),
-    MINUTE("minute", "m", 60),
-    HOUR("hour", "h", 60),
-    DAY("day", "d", 24),
-    WEEK("week", "w", 7);
+enum class DurationUnit(@Suppress("unused") val longName: String, val shortName: String, `count of previous`: Long = 1, previous: DurationUnit? = null) {
+    NANO("nanosecond", "ns"),
+    MICRO("microsecond", "mcs", `count of previous` = 1000, previous = NANO),
+    MILLI("millisecond", "ms", `count of previous` = 1000, previous = MICRO),
+    SECOND("second", "s", `count of previous` = 1000, previous = MILLI),
+    MINUTE("minute", "m", `count of previous` = 60, previous = SECOND),
+    HOUR("hour", "h", `count of previous` = 60, previous = MINUTE),
+    DAY("day", "d", `count of previous` = 24, previous = HOUR),
+    WEEK("week", "w", `count of previous` = 7, previous = DAY);
 
-    val nanos: Long = when (ordinal) {
-        0    -> 1L
-        else -> values()[ordinal - 1].nanos * prev
+    val nanos: Long = when (previous) {
+        null -> 1L
+        else -> previous.nanos * `count of previous`
     }
 
-    val unit = Duration(nanos)
+    val unit by lazy { Duration(nanos) }
 
     val max: Long = Long.MAX_VALUE / nanos
 
