@@ -28,13 +28,13 @@ fun <T: Any> Backend<T>.verify(condition: Backend<T>.() -> Boolean) = assert {
 }
 
 private inline fun <T: Any> Backend<T>.assert(condition: () -> Boolean) = apply {
-    if (!condition()) InterruptedExpectError.fail(toString())
+    if (!condition()) InterruptedExpectError.fail(line)
 }
 
 private fun <T: Any, R> Backend<T>.inspect(extractor: Backend<T>.() -> R): R = try {
     extractor()
 } catch (e: Throwable) {
-    InterruptedExpectError.fail(toString(), e)
+    InterruptedExpectError.inspectionFail(this, e)
 }
 
 private val <T: Any> Backend<T>.negative: Boolean get() = Negative in properties
