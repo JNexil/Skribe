@@ -35,7 +35,23 @@ class Calling<R>(action: () -> R) {
     }
 
     override fun toString(): String = when {
-        isFail -> "[Fail since $duration -> $throwable]"
-        else   -> "[Since $duration -> $result]"
+        isDone -> "[Since $duration -> $result]"
+        else   -> buildString {
+            append("[Fail since ")
+            append(duration)
+            append("following ")
+            val cause = throwable!!
+            append(cause.javaClass.simpleName)
+            if (cause.message != null) {
+                append(" with message \"")
+                append(cause.message)
+                append('"')
+            }
+            if (cause.cause != null) {
+                append(" following ")
+                append(cause.message)
+            }
+            append(']')
+        }
     }
 }
