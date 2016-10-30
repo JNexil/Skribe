@@ -17,9 +17,9 @@ class InterruptedExpectError private constructor(message: String, cause: Throwab
             this.shortTrace = ENABLED_SHORT_TRACE.equals(shortTrace, ignoreCase = true)
         }
 
-        fun error(message: String, cause: Throwable? = null): Nothing = throw when (cause) {
+        fun fail(message: String, cause: Throwable? = null): Nothing = throw when (cause) {
             is InterruptedExpectError -> cause + message
-            null                      -> proxyError(message, cause)
+            null                      -> proxyError(message, null)
             else                      -> proxyError("$message BUT", cause)
         }
 

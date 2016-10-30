@@ -1,7 +1,7 @@
 package su.jfdev.skribe.expect
 
 import su.jfdev.skribe.expect.dev.*
-import kotlin.test.*
+import su.jfdev.skribe.expect.dev.InterruptedExpectError.Companion.fail
 
 @Suppress("unused")
 sealed class Expect<out T: Any> {
@@ -10,7 +10,7 @@ sealed class Expect<out T: Any> {
      */
     class Backend<T: Any>(val lazy: Lazy<T?>, val line: String = "", val properties: Set<ExpectProperty> = emptySet()): Expect<T>() {
         val value: T? by lazy
-        val real: T get() = requireNotNull(value) { fail("[$this] interrupted by null") }
+        val real: T get() = requireNotNull(value) { fail(line, NullPointerException("Subject of Expect is null")) }
 
         fun copy(lazy: Lazy<T?> = this.lazy, properties: Set<ExpectProperty> = this.properties, line: String = this.line)
                 = Backend(lazy, line, properties)
