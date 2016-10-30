@@ -13,47 +13,46 @@ class SpekSuite private constructor(): SuiteAdapter {
 
     private val tasks = LinkedList<Dsl.() -> Unit>()
 
-    private fun task(action: Dsl.() -> Unit) {
+    private fun task(action: (Dsl) -> Unit) {
         val dsl = dsl ?: return tasks.addLast(action)
-        dsl.action()
+        action(dsl)
     }
 
-    private fun Dsl.init() {
-        this@SpekSuite.dsl = this
-        for (task in tasks) task(this)
+    private fun init(dsl: Dsl) {
+        this.dsl = dsl
+        for (task in tasks) task(dsl)
     }
 
     override fun beforeEach(action: () -> Unit) = task {
-        beforeEach(action)
+        it.beforeEach(action)
     }
 
     override fun afterEach(action: () -> Unit) = task {
-        afterEach(action)
+        it.afterEach(action)
     }
 
-    override fun case(name: String, test: () -> Unit) = SpekCase().apply {
-        task {
-            this.test(name, body = test)
-        }
+    override fun case(name: String, test: () -> Unit): SpekCase = SpekCase() finally { case ->
+        task { it.test(name, body = test) }
     }
 
-    override fun suite(name: String) = SpekSuite().apply {
+    override fun suite(name: String): SpekSuite = SpekSuite() finally { child ->
         task {
-            group(name) {
-                init()
+            it.group(name) {
+                child.init(this)
             }
         }
     }
 
-    override fun suite(name: String, action: SuiteAdapter.() -> Unit) = SpekSuite().apply {
+    override fun suite(name: String, action: SuiteAdapter.() -> Unit): SpekSuite = SpekSuite() finally { child ->
         task {
-            group(name) {
+            it.group(name) {
                 action()
-                init()
+                child.init(this)
             }
         }
     }
 
+    private inline infix fun <R> R.finally(action: (R) -> Unit): R = apply(action)
     inner class SpekCase: CaseAdapter
 }
 

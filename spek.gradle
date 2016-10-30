@@ -7,7 +7,6 @@ junitPlatform {
 }
 
 lib.spekCompile = [lib.spek["api"],
-                   lib.spek["expekt"],
                    lib["mockito"],
                    lib.junit["platform"]]
 
