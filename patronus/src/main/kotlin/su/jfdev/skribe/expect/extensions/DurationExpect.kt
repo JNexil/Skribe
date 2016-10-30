@@ -5,6 +5,7 @@ import su.jfdev.skribe.expect.*
 import su.jfdev.skribe.expect.dev.*
 
 val Expect<Duration>.nanos: Expect<Long> get() = via(Duration::nanos)
+val Expect<Duration>.micros: Expect<Long> get() = via(Duration::micros)
 val Expect<Duration>.millis: Expect<Long> get() = via(Duration::millis)
 val Expect<Duration>.seconds: Expect<Long> get() = via(Duration::seconds)
 val Expect<Duration>.minutes: Expect<Long> get() = via(Duration::minutes)

@@ -15,7 +15,7 @@ class Calling<R>(action: () -> R) {
                 throwable = e
             }
         }
-        duration = Duration.nanos(time)
+        duration = DurationUnit.NANO[time]
     }
 
     val isFail: Boolean get() = throwable != null
