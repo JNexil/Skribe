@@ -8,7 +8,11 @@ import su.jfdev.skribe.expect.dev.ExpectProperty.*
  * Create other backend for operation, that exclude words
  */
 fun <T: Any> Backend<T>.nested(action: Backend<T>.() -> Unit) = apply {
-    copy().action()
+    val line = when {
+        negative -> "$real should not"
+        else     -> "$real should"
+    }
+    copy(line = line).action()
 }
 
 fun <T: Any> Backend<T>.`verify done`(action: Backend<T>.() -> Unit) = verify {
