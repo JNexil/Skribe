@@ -22,8 +22,4 @@ fun <S: Any> Expect<S>.identity(other: S?): Expect<S> = backend()
         .sameAssertion(other, "identity $other")
 
 inline fun <reified S: Any> Expect<S>.instanceOf(type: KClass<S> = S::class): Expect<S> = instanceOf(type.java)
-fun <S: Any> Expect<S>.instanceOf(type: Class<S>): Expect<S> = backend()
-        .append("instance of ${type.simpleName}")
-        .verify {
-            type.isInstance(this)
-        }
+fun <S: Any> Expect<S>.instanceOf(type: Class<S>): Expect<S> = backend().instanceAssertion(type, "instance of ${type.simpleName}")
