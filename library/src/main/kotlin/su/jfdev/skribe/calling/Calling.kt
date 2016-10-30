@@ -18,8 +18,6 @@ class Calling<R>(action: () -> R) {
         duration = Duration.nanos(time)
     }
 
-    val failCause: Throwable? get() = throwable!!.cause
-    val failMessage: String? get() = throwable!!.message
     val isFail: Boolean get() = throwable != null
     val isDone: Boolean get() = throwable == null
 
