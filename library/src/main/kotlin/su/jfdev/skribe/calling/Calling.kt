@@ -42,15 +42,6 @@ class Calling<R>(action: () -> R) {
             append("following ")
             val cause = throwable!!
             append(cause.javaClass.simpleName)
-            if (cause.message != null) {
-                append(" with message \"")
-                append(cause.message)
-                append('"')
-            }
-            if (cause.cause != null) {
-                append(" following ")
-                append(cause.message)
-            }
             append(']')
         }
     }
