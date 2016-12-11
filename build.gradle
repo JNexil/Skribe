@@ -13,7 +13,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'kotlin'
 
-    group 'su.jfdev.skribe'
+    group 'com.github.jnexil'
     version '0.1.0'
 
     repositories {
