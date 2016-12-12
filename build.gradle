@@ -1,11 +1,14 @@
 buildscript {
     apply from: "dependencies.gradle"
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath lib["kotlin"]["gradle"]
         classpath lib.junit["plugin"]
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
+        classpath 'com.netflix.nebula:nebula-publishing-plugin:4.9.1'
     }
 }
 
@@ -13,7 +16,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'kotlin'
 
-    group 'com.github.jnexil'
+    group 'com.github.jnexil.skribe'
     version '0.1.0'
 
     repositories {
@@ -27,28 +30,68 @@ subprojects {
         compile lib["kotlin"]["std"]
 
         testCompile project(":patronus")
-        testCompile project(":spek")
+        testCompile project(":skribe-spek")
         testRuntime lib.spek["junit"]
     }
+
+    apply plugin: 'nebula.source-jar'
+    apply plugin: 'nebula.javadoc-jar'
+    apply plugin: 'com.jfrog.bintray'
+    apply plugin: "maven-publish"
 }
 
 project(":patronus") {
     dependencies {
         compile lib["kotlin"]["reflect"]
-        compile project(":library")
+        compile project(":skribe")
     }
 }
 
-project(":spek") {
+project(":skribe-spek") {
     dependencies {
-        compile project(":library")
+        compile project(":skribe")
         compile lib["spek"]["api"]
     }
 }
 
-project(":kotlintest") {
+project(":skribe-kotlintest") {
     dependencies {
-        compile project(":library")
+        compile project(":skribe")
         compile lib["kotlintest"]
+    }
+}
+
+subprojects {
+    publishing {
+        publications {
+            nebula(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+    
+    bintray {
+        user = property("binuser")
+        key = property("binkey")
+        publish = true
+        override = true
+        dryRun = true
+        publications = ["nebula"]
+        pkg {
+            userOrg = "jnexil"
+            repo = 'maven'
+            name = project.name
+            licenses = ['MIT']
+
+            vcsUrl = 'https://github.com/jnexil/Skribe.git'
+            websiteUrl = 'https://github.com/jnexil/Skribe'
+            issueTrackerUrl = 'https://github.com/jnexil/Skribe/issues'
+
+            githubRepo = 'jnexil/Skribe'
+
+            version {
+                released = new Date()
+            }
+        }
     }
 }

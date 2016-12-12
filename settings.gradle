@@ -1,1 +1,1 @@
-include "library", "spek", "kotlintest", "patronus"
+include "skribe", "skribe-spek", "skribe-kotlintest", "patronus"
