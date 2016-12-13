@@ -1,34 +1,37 @@
-subprojects {
-    publishing {
-        publications {
-            nebula(MavenPublication) {
-                from components.java
-            }
+apply plugin: 'nebula.source-jar'
+apply plugin: 'nebula.javadoc-jar'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: "maven-publish"
+
+publishing {
+    publications {
+        nebula(MavenPublication) {
+            from components.java
         }
     }
+}
 
-    bintray {
-        user = property("binuser")
-        key = property("binkey")
-        publish = true
-        override = true
-        dryRun = false
-        publications = ["nebula"]
-        pkg {
-            userOrg = "jnexil"
-            repo = 'maven'
-            name = project.name
-            licenses = ['MIT']
+bintray {
+    user = property("binuser")
+    key = property("binkey")
+    publish = true
+    override = true
+    dryRun = false
+    publications = ["nebula"]
+    pkg {
+        userOrg = "jnexil"
+        repo = 'maven'
+        name = project.name.capitalize()
+        licenses = ['MIT']
 
-            vcsUrl = 'https://github.com/jnexil/Skribe.git'
-            websiteUrl = 'https://github.com/jnexil/Skribe'
-            issueTrackerUrl = 'https://github.com/jnexil/Skribe/issues'
+        vcsUrl = 'https://github.com/jnexil/Skribe.git'
+        websiteUrl = 'https://github.com/jnexil/Skribe'
+        issueTrackerUrl = 'https://github.com/jnexil/Skribe/issues'
 
-            githubRepo = 'jnexil/Skribe'
+        githubRepo = 'jnexil/Skribe'
 
-            version {
-                released = new Date()
-            }
+        version {
+            released = new Date()
         }
     }
 }
