@@ -1,6 +1,6 @@
-package com.github.jnexil.skribe.stepwise
+package com.github.jnexil.skribe.spek
 
-import com.github.jnexil.skribe.adapter.*
+import com.github.jnexil.skribe.stepwise.*
 import org.jetbrains.spek.api.dsl.*
 
 fun <T> Dsl.with(factory: () -> T): Intermediate<T> = SpekSuite(this).with(factory)

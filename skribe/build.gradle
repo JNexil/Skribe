@@ -1,0 +1,5 @@
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-test"
+    compileOnly "org.jetbrains.spek:spek-api"
+    compileOnly "io.kotlintest:kotlintest"
+}

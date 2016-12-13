@@ -1,1 +1,1 @@
-include "skribe", "skribe-spek", "skribe-kotlintest", "patronus"
+include "skribe", "patronus"

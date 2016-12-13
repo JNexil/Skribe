@@ -1,97 +1,21 @@
 buildscript {
-    apply from: "dependencies.gradle"
+    ext.kotlinVersion = "1.0.5-2"
+    ext.junitVersion = "1.0.0-M3"
     repositories {
         jcenter()
     }
     dependencies {
-        classpath lib["kotlin"]["gradle"]
-        classpath lib.junit["plugin"]
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"
+        classpath 'io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitVersion"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
         classpath 'com.netflix.nebula:nebula-publishing-plugin:4.9.1'
     }
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'kotlin'
-
-    group 'com.github.jnexil.skribe'
-    version '0.1.0'
-
-    repositories {
-        jcenter()
-    }
-
-    apply from: "../spek.gradle"
-
-    dependencies {
-        compile lib["kotlin"]["test"]
-        compile lib["kotlin"]["std"]
-
-        testCompile project(":patronus")
-        testCompile project(":skribe-spek")
-        testRuntime lib.spek["junit"]
-    }
-
-    apply plugin: 'nebula.source-jar'
-    apply plugin: 'nebula.javadoc-jar'
-    apply plugin: 'com.jfrog.bintray'
-    apply plugin: "maven-publish"
-}
-
-project(":patronus") {
-    dependencies {
-        compile lib["kotlin"]["reflect"]
-        compile project(":skribe")
-    }
-}
-
-project(":skribe-spek") {
-    dependencies {
-        compile project(":skribe")
-        compile lib["spek"]["api"]
-    }
-}
-
-project(":skribe-kotlintest") {
-    dependencies {
-        compile project(":skribe")
-        compile lib["kotlintest"]
-    }
-}
-
-subprojects {
-    publishing {
-        publications {
-            nebula(MavenPublication) {
-                from components.java
-            }
-        }
-    }
-    
-    bintray {
-        user = property("binuser")
-        key = property("binkey")
-        publish = true
-        override = true
-        dryRun = true
-        publications = ["nebula"]
-        pkg {
-            userOrg = "jnexil"
-            repo = 'maven'
-            name = project.name
-            licenses = ['MIT']
-
-            vcsUrl = 'https://github.com/jnexil/Skribe.git'
-            websiteUrl = 'https://github.com/jnexil/Skribe'
-            issueTrackerUrl = 'https://github.com/jnexil/Skribe/issues'
-
-            githubRepo = 'jnexil/Skribe'
-
-            version {
-                released = new Date()
-            }
-        }
-    }
+    apply from: "../gradle/dependencies.gradle"
+    apply from: "../gradle/declare.gradle"
+    apply from: "../gradle/spek.gradle"
+    apply from: "../gradle/publish.gradle"
 }

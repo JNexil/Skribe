@@ -1,5 +1,6 @@
-package com.github.jnexil.skribe.adapter
+package com.github.jnexil.skribe.spek
 
+import com.github.jnexil.skribe.adapter.*
 import org.jetbrains.spek.api.dsl.*
 import java.util.*
 

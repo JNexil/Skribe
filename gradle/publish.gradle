@@ -1,0 +1,34 @@
+subprojects {
+    publishing {
+        publications {
+            nebula(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+
+    bintray {
+        user = property("binuser")
+        key = property("binkey")
+        publish = true
+        override = true
+        dryRun = true
+        publications = ["nebula"]
+        pkg {
+            userOrg = "jnexil"
+            repo = 'maven'
+            name = project.name
+            licenses = ['MIT']
+
+            vcsUrl = 'https://github.com/jnexil/Skribe.git'
+            websiteUrl = 'https://github.com/jnexil/Skribe'
+            issueTrackerUrl = 'https://github.com/jnexil/Skribe/issues'
+
+            githubRepo = 'jnexil/Skribe'
+
+            version {
+                released = new Date()
+            }
+        }
+    }
+}
