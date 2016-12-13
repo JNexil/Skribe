@@ -1,4 +1,4 @@
-package com.github.jnexil.skribe.stepwise
+package com.github.jnexil.skribe.testable
 
 import com.github.jnexil.skribe.adapter.*
 
@@ -7,7 +7,7 @@ internal class AdaptIntermediate<out Subject>(val suite: SuiteAdapter, val facto
         factory().run(action)
     }
 
-    override fun <R> then(description: String, action: (Subject) -> R): AdaptIntermediate<R> = AdaptIntermediate(suite = suite.suite(description)) {
+    override fun <R> skribe(description: String, action: (Subject) -> R): AdaptIntermediate<R> = AdaptIntermediate(suite = suite.suite(description)) {
         factory().run(action)
     }
 }

@@ -1,6 +1,8 @@
 package com.github.jnexil.skribe.spek
 
 import com.github.jnexil.skribe.adapter.*
+import com.github.jnexil.skribe.testable.*
+import com.github.jnexil.skribe.util.*
 import org.jetbrains.spek.api.dsl.*
 import java.util.*
 
@@ -56,4 +58,6 @@ internal class SpekSuite private constructor(): SuiteAdapter {
     inner class SpekCase: CaseAdapter
 }
 
-fun Dsl.adapter(): SuiteAdapter = SpekSuite(this)
+val Dsl.adapter: SuiteAdapter get() = SpekSuite(this)
+val Dsl.skribe: Intermediate<Unit> get() = adapter.skribe
+val <T> SubjectDsl<T>.skribe: Intermediate<T> get() = adapter.skribe { subject }
