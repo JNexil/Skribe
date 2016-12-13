@@ -29,11 +29,3 @@ fun <S> Testable<S>.catch(expect: KClass<out Throwable>, way: String, block: (S)
     }
 }
 
-@Described
-fun <S> Testable<S>.shouldR(action: String, block: S.() -> Boolean): CaseAdapter = should(action, block)
-
-@Described
-fun <S> Testable<S>.`shouldR not`(action: String, block: S.() -> Boolean): CaseAdapter = `should not`(action, block)
-
-@Described
-fun <S> Testable<S>.catchR(expect: KClass<out Throwable>, way: String, block: S.() -> Unit): CaseAdapter = catch(expect, way, block)

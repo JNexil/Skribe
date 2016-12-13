@@ -1,5 +1,6 @@
 package com.github.jnexil.skribe.util
 
+import com.github.jnexil.skribe.calling.*
 import com.github.jnexil.skribe.testable.*
 
 /**
@@ -20,3 +21,6 @@ inline fun <S> Intermediate<S>.share(description: String, action: Intermediate<S
     share(description).action()
 }
 
+inline fun <S, R> Intermediate<S>.skribeCalling(description: String, crossinline action: (S) -> R) = skribe(description) {
+    Calling { action(it) }
+}
