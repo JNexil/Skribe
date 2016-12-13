@@ -12,7 +12,7 @@ subprojects {
         key = property("binkey")
         publish = true
         override = true
-        dryRun = true
+        dryRun = false
         publications = ["nebula"]
         pkg {
             userOrg = "jnexil"
