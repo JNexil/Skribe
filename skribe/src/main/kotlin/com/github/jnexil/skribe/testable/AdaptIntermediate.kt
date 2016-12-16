@@ -11,7 +11,7 @@ internal class AdaptIntermediate<out Subject>(val suite: SuiteAdapter, val facto
         factory().run(action)
     }
 
-    override fun move(description: String): Intermediate<Subject> {
+    override fun share(description: String): Intermediate<Subject> {
         return AdaptIntermediate(suite = suite.suite(description), factory = factory)
     }
 

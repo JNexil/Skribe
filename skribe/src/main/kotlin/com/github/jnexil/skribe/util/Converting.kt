@@ -15,6 +15,11 @@ inline fun <S> Intermediate<S>.stepwise(using: Stepwise<S>.() -> Unit): Stepwise
 fun <S> Intermediate<S>.stepwise(description: String) = share(description).stepwise
 
 fun <S, R> Stepwise<S>.movingStep(description: String, action: (S) -> R): Intermediate<R> {
-    step(description).step { action(it) }
+    step(description) { action(it) }
     return move(description, action)
+}
+
+fun <S, R> Stepwise<S>.movingStep(action: (S) -> R): Intermediate<R> {
+    step { action(it) }
+    return move(action)
 }

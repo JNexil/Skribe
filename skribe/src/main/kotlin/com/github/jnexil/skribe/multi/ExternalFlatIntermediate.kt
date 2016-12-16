@@ -5,8 +5,8 @@ import com.github.jnexil.skribe.testable.*
 import com.github.jnexil.skribe.util.*
 
 internal class ExternalFlatIntermediate<out S>(private val basic: Sequence<Intermediate<S>>): Intermediate<S> {
-    override fun move(description: String): Intermediate<S> = basic.map {
-        it.move(description)
+    override fun share(description: String): Intermediate<S> = basic.map {
+        it.share(description)
     }.flatten()
 
     override fun test(description: String, action: (S) -> Unit): CaseAdapter {

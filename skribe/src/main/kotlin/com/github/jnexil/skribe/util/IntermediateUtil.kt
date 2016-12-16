@@ -14,13 +14,14 @@ annotation class Described
 annotation class Undescribed
 
 @Undescribed
-fun <S> Intermediate<S>.share(description: String) = move(description) { it }
-
-@Undescribed
 inline fun <S> Intermediate<S>.share(description: String, action: Intermediate<S>.() -> Unit) {
     share(description).action()
 }
 
-inline fun <S, R> Intermediate<S>.moveToCalling(description: String, crossinline action: (S) -> R) = move(description) {
+inline fun <S, R> Intermediate<S>.moveCalling(crossinline action: (S) -> R) = move {
+    Calling { action(it) }
+}
+
+inline fun <S, R> Stepwise<S>.stepCalling(crossinline action: (S) -> R) = step {
     Calling { action(it) }
 }

@@ -24,4 +24,22 @@ inline fun <S> Testable<S>.catchR(expect: KClass<out Throwable>, way: String, no
 inline fun <S, R> Intermediate<S>.moveR(description: String, noinline action: S.() -> R) = move(description, action)
 
 @Undescribed
-inline fun <S, R> Intermediate<S>.moveToCallingR(description: String, noinline action: S.() -> R) = moveToCalling(description, action)
+inline fun <S, R> Intermediate<S>.moveR(noinline action: S.() -> R) = move(action)
+
+@Undescribed
+inline fun <S, R> Intermediate<S>.moveCallingR(noinline action: S.() -> R) = moveCalling(action)
+
+@Undescribed
+inline fun <S, R> Stepwise<S>.stepCallingR(noinline action: S.() -> R) = stepCalling(action)
+
+@Undescribed
+inline fun <S> Stepwise<S>.stepR(description: String, noinline action: S.() -> Unit) = step(description, action)
+
+@Undescribed
+inline fun <S> Stepwise<S>.stepR(noinline action: S.() -> Unit) = step(action)
+
+@Undescribed
+inline fun <S> Stepwise<S>.movingStepR(noinline action: S.() -> Unit) = movingStep(action)
+
+@Undescribed
+inline fun <S> Stepwise<S>.movingStepR(description: String, noinline action: S.() -> Unit) = movingStep(description, action)

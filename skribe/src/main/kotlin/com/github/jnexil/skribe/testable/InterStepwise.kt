@@ -3,12 +3,12 @@ package com.github.jnexil.skribe.testable
 internal class InterStepwise<out Subject>(private var last: Intermediate<Subject>): Stepwise<Subject> {
     override fun test(description: String, action: (Subject) -> Unit) = last.test(description, action)
     override fun <R> move(description: String, action: (Subject) -> R) = last.move(description, action)
-    override fun move(description: String) = last.move(description)
+    override fun share(description: String) = last.share(description)
     override fun <R> move(action: (Subject) -> R) = last.move(action)
     override fun move(): Intermediate<Subject> = last
 
     override fun step(description: String): Stepwise<Subject> = apply {
-        last = move(description)
+        last = share(description)
     }
 
     override fun step(action: (Subject) -> Unit): Stepwise<Subject> = apply {

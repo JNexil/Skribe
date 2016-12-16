@@ -14,7 +14,7 @@ interface Intermediate<out Subject>: Testable<Subject> {
     /**
      * @return new intermediate with {it} action and [description]
      */
-    infix fun move(description: String): Intermediate<Subject>
+    infix fun share(description: String): Intermediate<Subject>
 
     /**
      * @return new intermediate [action] without description
