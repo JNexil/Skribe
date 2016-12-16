@@ -59,5 +59,5 @@ internal class SpekSuite private constructor(): SuiteAdapter {
 }
 
 val Dsl.adapter: SuiteAdapter get() = SpekSuite(this)
-val Dsl.skribe: Intermediate<Unit> get() = adapter.skribe
-val <T> SubjectDsl<T>.skribe: Intermediate<T> get() = adapter.skribe { subject }
+val Dsl.intermediate: Intermediate<Unit> get() = adapter.intermediate
+val <T> SubjectDsl<T>.intermediate: Intermediate<T> get() = adapter.intermediate { subject }

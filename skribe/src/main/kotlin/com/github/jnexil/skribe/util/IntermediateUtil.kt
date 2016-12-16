@@ -21,6 +21,6 @@ inline fun <S> Intermediate<S>.share(description: String, action: Intermediate<S
     share(description).action()
 }
 
-inline fun <S, R> Intermediate<S>.skribeCalling(description: String, crossinline action: (S) -> R) = move(description) {
+inline fun <S, R> Intermediate<S>.moveToCalling(description: String, crossinline action: (S) -> R) = move(description) {
     Calling { action(it) }
 }
