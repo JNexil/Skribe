@@ -7,8 +7,15 @@ internal class AdaptIntermediate<out Subject>(val suite: SuiteAdapter, val facto
         factory().run(action)
     }
 
-    override fun <R> skribe(description: String, action: (Subject) -> R): AdaptIntermediate<R> = AdaptIntermediate(suite = suite.suite(description)) {
+    override fun <R> move(description: String, action: (Subject) -> R): Intermediate<R> = AdaptIntermediate(suite = suite.suite(description)) {
+        factory().run(action)
+    }
+
+    override fun move(description: String): Intermediate<Subject> {
+        return AdaptIntermediate(suite = suite.suite(description), factory = factory)
+    }
+
+    override fun <R> move(action: (Subject) -> R): Intermediate<R> = AdaptIntermediate(suite) {
         factory().run(action)
     }
 }
-

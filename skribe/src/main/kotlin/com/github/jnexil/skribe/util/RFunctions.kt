@@ -21,7 +21,7 @@ inline fun <S> Testable<S>.`shouldR not`(action: String, noinline block: S.() ->
 inline fun <S> Testable<S>.catchR(expect: KClass<out Throwable>, way: String, noinline block: S.() -> Unit) = catch(expect, way, block)
 
 @Undescribed
-inline fun <S, R> Intermediate<S>.skribeR(description: String, noinline action: S.() -> R) = skribe(description, action)
+inline fun <S, R> Intermediate<S>.skribeR(description: String, noinline action: S.() -> R) = move(description, action)
 
 @Undescribed
 inline fun <S, R> Intermediate<S>.skribeRCalling(description: String, noinline action: (S) -> R) = skribeCalling(description, action)
