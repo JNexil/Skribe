@@ -21,6 +21,14 @@ private fun <R> Expect<Calling<R>>.failAssertion(name: String, expectedSuccess: 
 
 val <R> Expect<Calling<R>>.assertion: Expect<Calling<R>> get() = backend().assertion("assertion") { real.throwable is AssertionError }
 
-fun <R> Expect<Calling<R>>.throwable(type: KClass<out Throwable>): Expect<Calling<R>> = backend().instanceAssertion(type.java, "throwable ${type.simpleName}")
-fun <R> Expect<Calling<R>>.error(type: KClass<out Error>): Expect<Calling<R>> = backend().instanceAssertion(type.java, "error ${type.simpleName}")
-fun <R> Expect<Calling<R>>.exception(type: KClass<out Exception>): Expect<Calling<R>> = backend().instanceAssertion(type.java, "exception ${type.simpleName}")
+fun <R> Expect<Calling<R>>.throwable(type: KClass<out Throwable>): Expect<Calling<R>> = backend().apply {
+    throwable.backend().instanceAssertion(type.java, "throwable ${type.simpleName}")
+}
+
+fun <R> Expect<Calling<R>>.error(type: KClass<out Error>): Expect<Calling<R>> = backend().apply {
+    throwable.backend().instanceAssertion(type.java, "error ${type.simpleName}")
+}
+
+fun <R> Expect<Calling<R>>.exception(type: KClass<out Exception>): Expect<Calling<R>> = backend().apply {
+    throwable.backend().instanceAssertion(type.java, "exception ${type.simpleName}")
+}
