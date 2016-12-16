@@ -2,4 +2,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-test"
     compileOnly "org.jetbrains.spek:spek-api"
     compileOnly "io.kotlintest:kotlintest"
+    testCompile "junit:junit"
+    compile 'io.github.microutils:kotlin-logging:1.4.1'
+    testRuntime group: 'ch.qos.logback', name: 'logback-classic'
 }

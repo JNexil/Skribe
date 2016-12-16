@@ -1,0 +1,10 @@
+<configuration>
+    <appender name="SOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{mm:ss:SSS} %highlight(%-5level) %green(%logger{20}) %cyan(%msg%n)</pattern>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="SOUT"/>
+    </root>
+</configuration>
