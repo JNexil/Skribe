@@ -5,6 +5,10 @@ import com.github.jnexil.skribe.testable.*
 
 private val describeToString = Any?::toString
 
+fun <V> Intermediate<*>.each(vararg values: V, descriptor: (V) -> String = describeToString): Intermediate<V> = values.asSequence().map { value ->
+    move(description = descriptor(value)) { value }
+}.flatten()
+
 fun <I, V, O> Intermediate<I>.couple(values: Iterable<V>, descriptor: (V) -> String = describeToString, zipper: (I, V) -> O) = couple(
         values = values.asSequence(),
         descriptor = descriptor,

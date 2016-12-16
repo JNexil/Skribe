@@ -12,7 +12,7 @@ internal class ExternalFlatIntermediate<out S>(private val basic: Sequence<Inter
     override fun test(description: String, action: (S) -> Unit): CaseAdapter {
         val cases = basic.map {
             it.test(description, action)
-        }
+        }.buffered()
         return MultiCase(cases)
     }
 
