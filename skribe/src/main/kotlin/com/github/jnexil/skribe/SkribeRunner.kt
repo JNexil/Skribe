@@ -19,18 +19,35 @@ class SkribeRunner(testClass: Class<Skribe>): Runner() {
     }
 
     private fun RunNotifier.testCase(element: SkribeCase) {
+        logger.debug { "Started: ${element.description}" }
         fireTestStarted(element.description)
         try {
             element.test()
+            logger.debug { "Finished: ${element.description}" }
             fireTestFinished(element.description)
         } catch (e: Throwable) {
+            logger.debug { "Failed: ${element.description}" }
             fireTestFailure(Failure(element.description, e))
         }
     }
 
     override fun getDescription(): Description {
-        logger.info { "Runner request description: ${skribe.description}" }
+        logger.debug {
+            buildString {
+                appendln("Runner request description:")
+                log(0, description)
+            }
+        }
         return skribe.description
+    }
+
+    private fun StringBuilder.log(depth: Int, description: Description) {
+        append("desc ")
+        repeat(depth) { append('-') }
+        appendln(description)
+        for (child in description.children) {
+            log(depth + 1, child)
+        }
     }
 
     companion object: KLogging()
