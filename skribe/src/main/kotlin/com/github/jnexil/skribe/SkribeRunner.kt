@@ -35,7 +35,7 @@ class SkribeRunner(testClass: Class<Skribe>): Runner() {
         logger.debug {
             buildString {
                 appendln("Runner request description:")
-                log(0, description)
+                log(0, skribe.description)
             }
         }
         return skribe.description
