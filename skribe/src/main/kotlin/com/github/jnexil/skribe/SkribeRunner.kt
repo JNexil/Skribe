@@ -1,5 +1,6 @@
 package com.github.jnexil.skribe
 
+import com.github.jnexil.skribe.adapter.Extension.*
 import mu.*
 import org.junit.runner.*
 import org.junit.runner.notification.*
@@ -19,15 +20,37 @@ class SkribeRunner(testClass: Class<Skribe>): Runner() {
     }
 
     private fun RunNotifier.testCase(element: SkribeCase) {
-        logger.debug { "Started: ${element.description}" }
-        fireTestStarted(element.description)
-        try {
-            element.test()
-            logger.debug { "Finished: ${element.description}" }
-            fireTestFinished(element.description)
-        } catch (e: Throwable) {
-            logger.debug { "Failed: ${element.description}" }
-            fireTestFailure(Failure(element.description, e))
+        val description = element.description
+        logger.debug { "Started: $description" }
+        when (Ignored) {
+            in element.suite.extensions -> {
+                fireTestIgnored(description)
+            }
+            else                        -> {
+                fireTestStarted(description)
+                try {
+                    element.doTest()
+                    logger.debug { "Finished: $description" }
+                } catch (e: Throwable) {
+                    logger.debug { "Failed: $description" }
+                    fireTestFailure(Failure(description, e))
+                }
+                fireTestFinished(description)
+            }
+        }
+    }
+
+    private fun SkribeCase.doTest() {
+        for (extension in suite.extensions) {
+            if (extension is ActionBeforeEach) {
+                extension.action()
+            }
+        }
+        test()
+        for (extension in suite.extensions) {
+            if (extension is ActionAfterEach) {
+                extension.action()
+            }
         }
     }
 
@@ -50,5 +73,5 @@ class SkribeRunner(testClass: Class<Skribe>): Runner() {
         }
     }
 
-    companion object: KLogging()
+    private companion object: KLogging()
 }

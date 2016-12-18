@@ -4,7 +4,7 @@ import com.github.jnexil.skribe.adapter.*
 import com.github.jnexil.skribe.testable.*
 import com.github.jnexil.skribe.util.*
 
-internal class ExternalFlatIntermediate<out S>(private val basic: Sequence<Intermediate<S>>): Intermediate<S> {
+internal class ExternalFlatIntermediate<out S>(private val basic: Iterable<Intermediate<S>>): Intermediate<S> {
     override fun share(description: String): Intermediate<S> = basic.map {
         it.share(description)
     }.flatten()
@@ -12,7 +12,7 @@ internal class ExternalFlatIntermediate<out S>(private val basic: Sequence<Inter
     override fun test(description: String, action: (S) -> Unit): CaseAdapter {
         val cases = basic.map {
             it.test(description, action)
-        }.buffered()
+        }
         return MultiCase(cases)
     }
 
@@ -24,5 +24,5 @@ internal class ExternalFlatIntermediate<out S>(private val basic: Sequence<Inter
         it.move(action)
     }.flatten()
 
-    inner class MultiCase(val cases: Sequence<CaseAdapter>): CaseAdapter
+    data class MultiCase(val cases: Iterable<CaseAdapter>): CaseAdapter
 }
